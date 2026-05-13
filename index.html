@@ -472,7 +472,8 @@ body{font-family:'Noto Sans JP',sans-serif;font-size:16px;touch-action:manipulat
   margin:0 auto 20px;
   flex-shrink:0;
 }
-.popup-icon{font-size:clamp(52px,13vw,68px);margin-bottom:10px;line-height:1;}
+.popup-icon{font-size:clamp(52px,13vw,68px);margin-bottom:10px;line-height:1;display:flex;align-items:center;justify-content:center;}
+.popup-icon svg{width:72px;height:72px;}
 .popup-title{font-size:clamp(20px,5vw,24px);font-weight:700;color:#0d4a82;margin-bottom:12px;line-height:1.5;}
 .popup-body{font-size:clamp(16px,4vw,18px);color:#333;line-height:1.9;margin-bottom:20px;}
 .popup-body b{color:#c0392b;}
@@ -614,7 +615,6 @@ body{font-family:'Noto Sans JP',sans-serif;font-size:16px;touch-action:manipulat
       <!-- 確保対象ウインドウ -->
       <div class="dq-win" id="dq-chara-win">
         <div class="dq-win-title">確保対象</div>
-        <div class="dq-chara-icon" id="dq-chara-icon"></div>
         <div class="dq-chara-name" id="dq-chara-name"></div>
         <div class="dq-chara-desc" id="dq-chara-desc"></div>
       </div>
@@ -985,6 +985,86 @@ function showPopup(icon,title,body,btns){
 }
 function hidePopup(){document.getElementById('popup').style.display='none';}
 
+/* ===== ポップアップ用アイコン生成 ===== */
+function robotIconSvg(playerName){
+  // プレーヤー名から壱号・弐号・参号を判定
+  const num = playerName && playerName.includes('弐') ? 2
+            : playerName && playerName.includes('参') ? 3
+            : 1;
+
+  if(num === 1){
+    // 壱号（青・スタンダード）
+    return `<svg width="72" height="72" viewBox="-6 -4 72 116" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="0" x2="30" y2="14" stroke="#1a5aaa" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="30" cy="0" r="4" fill="#4488ee"/>
+      <rect x="10" y="14" width="40" height="30" rx="6" fill="#2255bb" stroke="#4488ee" stroke-width="2"/>
+      <rect x="16" y="22" width="10" height="8" rx="2" fill="#00eeff"/>
+      <rect x="34" y="22" width="10" height="8" rx="2" fill="#00eeff"/>
+      <rect x="18" y="34" width="24" height="4" rx="2" fill="#4488ee"/>
+      <rect x="24" y="44" width="12" height="6" rx="2" fill="#1a4499"/>
+      <rect x="6" y="50" width="48" height="36" rx="8" fill="#2255bb" stroke="#4488ee" stroke-width="2"/>
+      <rect x="22" y="60" width="16" height="16" rx="3" fill="#003388"/>
+      <text x="30" y="72" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#00eeff">壱</text>
+      <rect x="-6" y="52" width="12" height="26" rx="6" fill="#1a4499" stroke="#4488ee" stroke-width="1.5"/>
+      <rect x="54" y="52" width="12" height="26" rx="6" fill="#1a4499" stroke="#4488ee" stroke-width="1.5"/>
+      <rect x="12" y="86" width="14" height="22" rx="5" fill="#1a4499" stroke="#4488ee" stroke-width="1.5"/>
+      <rect x="34" y="86" width="14" height="22" rx="5" fill="#1a4499" stroke="#4488ee" stroke-width="1.5"/>
+    </svg>`;
+  } else if(num === 2){
+    // 弐号（赤・重装甲）
+    return `<svg width="72" height="72" viewBox="-12 -4 84 120" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="4" x2="20" y2="15" stroke="#aa1111" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="20" cy="3" r="4" fill="#ee3333"/>
+      <line x1="40" y1="4" x2="40" y2="15" stroke="#aa1111" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="40" cy="3" r="4" fill="#ee3333"/>
+      <rect x="4" y="14" width="52" height="32" rx="4" fill="#aa1111" stroke="#ee3333" stroke-width="2.5"/>
+      <rect x="10" y="24" width="40" height="8" rx="2" fill="#ff4400"/>
+      <line x1="30" y1="24" x2="30" y2="32" stroke="#aa1111" stroke-width="1"/>
+      <rect x="12" y="36" width="8" height="4" rx="1" fill="#882222"/>
+      <rect x="24" y="36" width="8" height="4" rx="1" fill="#882222"/>
+      <rect x="36" y="36" width="8" height="4" rx="1" fill="#882222"/>
+      <rect x="22" y="46" width="16" height="6" rx="2" fill="#881111"/>
+      <rect x="0" y="52" width="60" height="38" rx="6" fill="#aa1111" stroke="#ee3333" stroke-width="2.5"/>
+      <rect x="8" y="60" width="44" height="4" rx="2" fill="#882222"/>
+      <rect x="20" y="66" width="20" height="16" rx="3" fill="#881111"/>
+      <text x="30" y="78" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ff6644">弐</text>
+      <rect x="-12" y="52" width="14" height="30" rx="5" fill="#881111" stroke="#ee3333" stroke-width="1.5"/>
+      <rect x="58" y="52" width="14" height="30" rx="5" fill="#881111" stroke="#ee3333" stroke-width="1.5"/>
+      <rect x="8" y="90" width="18" height="20" rx="4" fill="#881111" stroke="#ee3333" stroke-width="1.5"/>
+      <rect x="34" y="90" width="18" height="20" rx="4" fill="#881111" stroke="#ee3333" stroke-width="1.5"/>
+    </svg>`;
+  } else {
+    // 参号（緑・スリム）
+    return `<svg width="72" height="72" viewBox="-1 -12 62 122" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="-4" x2="30" y2="14" stroke="#117711" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="26" y="-8" width="8" height="5" rx="2" fill="#33cc33"/>
+      <rect x="12" y="14" width="36" height="32" rx="8" fill="#117744" stroke="#33cc33" stroke-width="2"/>
+      <circle cx="22" cy="26" r="6" fill="#00ff88"/>
+      <circle cx="38" cy="26" r="6" fill="#00ff88"/>
+      <circle cx="22" cy="26" r="3" fill="#006633"/>
+      <circle cx="38" cy="26" r="3" fill="#006633"/>
+      <rect x="19" y="36" width="22" height="3" rx="1.5" fill="#33cc33"/>
+      <rect x="26" y="46" width="8" height="7" rx="2" fill="#0d5533"/>
+      <rect x="10" y="53" width="40" height="34" rx="10" fill="#117744" stroke="#33cc33" stroke-width="2"/>
+      <circle cx="30" cy="68" r="10" fill="#0d5533"/>
+      <text x="30" y="72" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#00ff88">参</text>
+      <rect x="-1" y="55" width="11" height="24" rx="5.5" fill="#0d5533" stroke="#33cc33" stroke-width="1.5"/>
+      <rect x="50" y="55" width="11" height="24" rx="5.5" fill="#0d5533" stroke="#33cc33" stroke-width="1.5"/>
+      <rect x="14" y="87" width="11" height="22" rx="5" fill="#0d5533" stroke="#33cc33" stroke-width="1.5"/>
+      <rect x="35" y="87" width="11" height="22" rx="5" fill="#0d5533" stroke="#33cc33" stroke-width="1.5"/>
+    </svg>`;
+  }
+}
+
+function charaIconSvg(chara){
+  // キャラのSVGを72x72サイズで表示
+  const vbMatch = chara.svg.match(/viewBox="([^"]+)"/);
+  const vb = vbMatch ? vbMatch[1] : '0 0 44 80';
+  const inner = chara.svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
+  if(!inner) return chara.svg;
+  return `<svg width="72" height="72" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg">${inner[1]}</svg>`;
+}
+
 /* SETUP */
 /* ===== 効果音エンジン (Web Audio API) ===== */
 const SFX = (() => {
@@ -1339,7 +1419,8 @@ function startGame(){
       const shuffled=[...CPU_CARDS].sort(()=>Math.random()-0.5);
       playerCards=shuffled.slice(0,6).map(c=>({...c,used:false}));
     } else {
-      playerCards=CPU_CARDS.map(c=>({...c,used:false}));
+      const shuffled=[...CPU_CARDS].sort(()=>Math.random()-0.5);
+      playerCards=shuffled.slice(0,6).map(c=>({...c,used:false}));
     }
     G.players.push({
       name:isCpu?cpunames[i-G.pc]:hnames[i],
@@ -1358,25 +1439,25 @@ function startGame(){
   syncWindBtns();
   startBubble();
   addLog(`【${diffLabel}】屋上「${G.rooftop.name}」に${G.chara.name}が現れた！`);
-  showPopup('🏢','緊急事態発生！',`屋上から飛び降りようとしてる人間がいると通報を受け、<br>あなたたちAI刑事（デカ）は駆けつけました。<br><br><b>${G.chara.name}</b>を安全圏へ導いてください！<br><small style="color:#888;">${diffLabel} ／ ${G.rooftop.name}</small>`,
+  showPopup('🏢','事件発生！',`屋上から飛び降りようとしてる人間がいると通報を受け、<br>あなたたちAI刑事（デカ）は駆けつけました。<br><br><b>${G.chara.name}</b>を安全圏へ導いてください！<br><small style="color:#888;">${diffLabel} ／ ${G.rooftop.name}</small>`,
     [{label:'了解！',cls:'only',action:()=>popupTurnStart(0)}]);
 }
 
 function popupTurnStart(idx){SFX.turnStart();
   const p=G.players[idx];
   if(p.isCpu){
-    showPopup('🤖',`${p.name}のターン`,`${p.name}が呼びかけカードを選んでいます…`,
+    showPopup(robotIconSvg(p.name),`${p.name}のターン`,`${p.name}が呼びかけカードを選んでいます…`,
       [{label:'続ける',cls:'only',action:()=>{
         const best=cpuPickCard();if(best===-1)return;
         const card=p.cards[best];
         G.selCard=best;G.phase='roll';renderSelPreview();renderCards();
         addLog(`${p.name}「${card.serif}」を選んだ`);
-        showPopup('🤖',`${p.name}が選びました`,
+        showPopup(robotIconSvg(p.name),`${p.name}が選びました`,
           `<div style="font-size:clamp(18px,4.5vw,22px);font-weight:900;color:#c0392b;margin-bottom:12px;line-height:1.5;">「${card.serif}」</div>`+makePopupVCard(card)+`<div style="margin-top:4px;font-size:20px;font-weight:700;color:#0d4a82;">${p.name}がサイコロを振ります</div>`,
           [{label:'続ける',cls:'only',action:()=>doRollDice('normal')}]);
       }}]);
   } else {
-    showPopup('🤖',`${p.name}（あなた）の番です`,`呼びかけカードを選んで、<b>${G.chara.name}</b>を安全圏に導いてください！`,
+    showPopup(robotIconSvg(p.name),`${p.name}（あなた）の番です`,`呼びかけカードを選んで、<b>${G.chara.name}</b>を安全圏に導いてください！`,
       [{label:'カードを選ぶ',cls:'only',action:()=>{}}]);
   }
 }
@@ -1474,7 +1555,7 @@ function renderBoard(){
 }
 
 function renderDQWindows(){
-  document.getElementById('dq-chara-icon').innerHTML=G.chara.svg.replace(/width="38"/,'width="34"').replace(/height="44"/,'height="39"');
+  // dq-chara-icon は非表示のため描画スキップ
   document.getElementById('dq-chara-name').textContent=G.chara.name;
   document.getElementById('dq-chara-desc').textContent=G.chara.desc;
   const list=document.getElementById('dq-players-list');
@@ -1693,9 +1774,8 @@ function processRoll(result,mode){
       }
       G.pawn={r:nr,c:nc};renderBoard();SFX.charaMove();
       const lineColor=approaching?'#065f46':'#b91c1c';
-      const lineIcon=approaching?'💬':'😠';
       // 第2ポップアップ: キャラセリフ + 移動方向
-      showPopup(lineIcon,
+      showPopup(charaIconSvg(G.chara),
         `${G.chara.name}「${charaLine}」`,
         `<div style="font-size:clamp(18px,4.5vw,22px);font-weight:700;line-height:1.5;color:#0d4a82;">${G.chara.name}が<span style="color:#c0392b;">「${DL[dir]}」</span>へ動きました</div>`,
         [{label:'続ける',cls:'only',action:()=>{
@@ -1783,7 +1863,7 @@ function showResult(win,result,dir,card,outCards){
 
   if(win){
     const line=getWinLine(G.chara);
-    showPopup('😊',
+    showPopup(charaIconSvg(G.chara),
       `${G.chara.name}「${line}」`,
       `<span style="color:#065f46;font-size:22px;font-weight:700;">無事救出成功！</span>`,
       [{label:'続ける',cls:'only',action:()=>{
@@ -1793,7 +1873,7 @@ function showResult(win,result,dir,card,outCards){
     const cpus=G.players.filter(pl=>pl.isCpu);
     const comforter=cpus.length>0?cpus[Math.floor(Math.random()*cpus.length)]:{name:'AI刑事'};
     const comfort=getLoseComfort();
-    showPopup('😔',
+    showPopup(robotIconSvg(comforter.name),
       `${comforter.name}「${comfort}」`,
       ``,
       [{label:'続ける',cls:'only',action:()=>{
@@ -1805,7 +1885,7 @@ function showResult(win,result,dir,card,outCards){
 function _showResultScreen(win,result,dir,card,outCards){
   const rs=document.getElementById('rs');rs.className='screen '+(win?'r-win':'r-lose');
   document.getElementById('result-chara').innerHTML=G.chara.svg.replace('width="38"','width="64"').replace('height="44"','height="74"');
-  document.getElementById('rtitle').textContent=win?'救出成功！':'完全敗北…';
+  document.getElementById('rtitle').textContent=win?'救出成功！':'救出失敗…';
   document.getElementById('rtitle').style.color='#FFE566';
   document.getElementById('rsub').innerHTML=win
     ? `<b style="color:#FFE566">${G.chara.name}</b>を無事救出`
