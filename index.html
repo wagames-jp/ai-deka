@@ -227,12 +227,12 @@ body{font-family:'Noto Sans JP',sans-serif;font-size:16px;touch-action:manipulat
 .dq-chara-icon{display:flex;justify-content:center;margin-bottom:4px;}
 .dq-chara-name{font-size:16px;font-weight:700;color:#fff;text-align:center;line-height:1.3;}
 .dq-chara-desc{font-size:13px;color:#aaddff;text-align:center;line-height:1.4;margin-top:2px;}
-.dq-player-row{display:flex;align-items:center;gap:3px;padding:4px 0;font-size:14px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.08);}
+.dq-player-row{display:flex;align-items:flex-start;gap:3px;padding:4px 0;font-size:14px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.08);}
 .dq-player-row:last-child{border-bottom:none;}
 .dq-player-row.dq-active{color:#FFE566;}
 .dq-player-row.dq-normal{color:#bbb;}
 .dq-player-arrow{font-size:13px;width:13px;}
-.dq-player-cards{font-size:13px;color:#88aaff;margin-left:auto;}
+.dq-player-cards{font-size:13px;color:#88aaff;display:block;margin-left:1em;}
 
 /* ── 雲アニメーション ── */
 .cloud-layer{
@@ -1439,25 +1439,32 @@ function startGame(){
   syncWindBtns();
   startBubble();
   addLog(`【${diffLabel}】屋上「${G.rooftop.name}」に${G.chara.name}が現れた！`);
-  showPopup('🏢','事件発生！',`屋上から飛び降りようとしてる人間がいると通報を受け、<br>あなたたちAI刑事（デカ）は駆けつけました。<br><br><b>${G.chara.name}</b>を安全圏へ導いてください！<br><small style="color:#888;">${diffLabel} ／ ${G.rooftop.name}</small>`,
-    [{label:'了解！',cls:'only',action:()=>popupTurnStart(0)}]);
+  showPopup('🏢',
+    '<span style="color:#1a5aee;font-weight:900;">事件発生！</span>',
+    '<div style="font-size:clamp(15px,4vw,17px);line-height:1.85;color:#1a3a82;font-weight:700;">警察無線「屋上から飛び降りようとしてる人間がいる！<br>付近のAI刑事（デカ）は急行せよ！」</div>',
+    [{label:'了解！',cls:'only',action:()=>{
+      showPopup('🚨',
+        '<span style="color:#1a5aee;font-weight:900;">現場到着！</span>',
+        `<div style="font-size:clamp(15px,4vw,17px);line-height:1.85;color:#1a3a82;font-weight:700;">屋上には<span style="color:#c0392b;font-weight:900;">${G.chara.name}</span>がいる！<br><span style="color:#c0392b;font-weight:900;">呼びかけカード</span>で安全圏へ導いてください！<br><span style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:#1a3a82;">${diffLabel} ／ ${G.rooftop.name}</span></div>`,
+        [{label:'了解！',cls:'only',action:()=>popupTurnStart(0)}]);
+    }}]);
 }
 
 function popupTurnStart(idx){SFX.turnStart();
   const p=G.players[idx];
   if(p.isCpu){
-    showPopup(robotIconSvg(p.name),`${p.name}のターン`,`${p.name}が呼びかけカードを選んでいます…`,
+    showPopup(robotIconSvg(p.name),`<span style="color:#1a5aee;font-weight:900;">${p.name}のターン</span>`,`<span style="color:#1a3a82;font-weight:700;">${p.name}が<span style="color:#c0392b;font-weight:900;">呼びかけカード</span>を選んでいます…</span>`,
       [{label:'続ける',cls:'only',action:()=>{
         const best=cpuPickCard();if(best===-1)return;
         const card=p.cards[best];
         G.selCard=best;G.phase='roll';renderSelPreview();renderCards();
         addLog(`${p.name}「${card.serif}」を選んだ`);
-        showPopup(robotIconSvg(p.name),`${p.name}が選びました`,
-          `<div style="font-size:clamp(18px,4.5vw,22px);font-weight:900;color:#c0392b;margin-bottom:12px;line-height:1.5;">「${card.serif}」</div>`+makePopupVCard(card)+`<div style="margin-top:4px;font-size:20px;font-weight:700;color:#0d4a82;">${p.name}がサイコロを振ります</div>`,
+        showPopup(robotIconSvg(p.name),`<span style="color:#1a5aee;font-weight:900;">${p.name}が選びました</span>`,
+          `<div style="font-size:clamp(18px,4.5vw,22px);font-weight:900;color:#c0392b;margin-bottom:12px;line-height:1.5;">「${card.serif}」</div>`+makePopupVCard(card)+`<div style="margin-top:4px;font-size:clamp(15px,4vw,17px);font-weight:700;color:#1a3a82;">${p.name}がサイコロを振ります</div>`,
           [{label:'続ける',cls:'only',action:()=>doRollDice('normal')}]);
       }}]);
   } else {
-    showPopup(robotIconSvg(p.name),`${p.name}（あなた）の番です`,`呼びかけカードを選んで、<b>${G.chara.name}</b>を安全圏に導いてください！`,
+    showPopup(robotIconSvg(p.name),`<span style="color:#1a5aee;font-weight:900;">${p.name}（あなた）の番です</span>`,`<span style="color:#1a3a82;font-weight:700;"><span style="color:#c0392b;font-weight:900;">呼びかけカード</span>を選んで、<span style="color:#c0392b;font-weight:900;">${G.chara.name}</span>を安全圏に導いてください！</span>`,
       [{label:'カードを選ぶ',cls:'only',action:()=>{}}]);
   }
 }
@@ -1565,7 +1572,7 @@ function renderDQWindows(){
     const isActive=i===G.cur;
     const row=document.createElement('div');
     row.className='dq-player-row '+(isActive?'dq-active':'dq-normal');
-    row.innerHTML=`<span class="dq-player-arrow">${isActive?'▶':'\u00a0'}</span><span style="line-height:1.3;">${p.name}${!p.isCpu?'<br><span style="font-size:10px;color:#aaddff;">（あなた）</span>':''}</span><span class="dq-player-cards">${rem}枚</span>`;
+    row.innerHTML=`<span class="dq-player-arrow">${isActive?'▶':'\u00a0'}</span><span style="line-height:1.3;">${p.name}${!p.isCpu?'<br><span style="font-size:10px;color:#aaddff;">（あなた）</span>':''}${!p.isCpu?'<br>':'<br>'}<span class="dq-player-cards">${rem}枚</span></span>`;
     list.appendChild(row);
   });
 }
