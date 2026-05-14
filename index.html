@@ -1440,11 +1440,11 @@ function startGame(){
   startBubble();
   addLog(`【${diffLabel}】屋上「${G.rooftop.name}」に${G.chara.name}が現れた！`);
   showPopup('🏢',
-    '<span style="color:#1a5aee;font-weight:900;">事件発生！</span>',
+    '<span style="color:#1a3a82;font-weight:900;">事件発生！</span>',
     '<div style="font-size:clamp(15px,4vw,17px);line-height:1.85;color:#1a3a82;font-weight:700;">警察無線「屋上から飛び降りようとしてる人間がいる！<br>付近のAI刑事（デカ）は急行せよ！」</div>',
     [{label:'了解！',cls:'only',action:()=>{
       showPopup('🚨',
-        '<span style="color:#1a5aee;font-weight:900;">現場到着！</span>',
+        '<span style="color:#1a3a82;font-weight:900;">現場到着！</span>',
         `<div style="font-size:clamp(15px,4vw,17px);line-height:1.85;color:#1a3a82;font-weight:700;">屋上には<span style="color:#c0392b;font-weight:900;">${G.chara.name}</span>がいる！<br><span style="color:#c0392b;font-weight:900;">呼びかけカード</span>で安全圏へ導いてください！<br><span style="font-size:clamp(13px,3.5vw,15px);font-weight:700;color:#1a3a82;">${diffLabel} ／ ${G.rooftop.name}</span></div>`,
         [{label:'了解！',cls:'only',action:()=>popupTurnStart(0)}]);
     }}]);
@@ -1453,18 +1453,18 @@ function startGame(){
 function popupTurnStart(idx){SFX.turnStart();
   const p=G.players[idx];
   if(p.isCpu){
-    showPopup(robotIconSvg(p.name),`<span style="color:#1a5aee;font-weight:900;">${p.name}のターン</span>`,`<span style="color:#1a3a82;font-weight:700;">${p.name}が<span style="color:#c0392b;font-weight:900;">呼びかけカード</span>を選んでいます…</span>`,
+    showPopup(robotIconSvg(p.name),`<span style="color:#1a3a82;font-weight:900;">${p.name}のターン</span>`,`<span style="color:#1a3a82;font-weight:700;">${p.name}が<span style="color:#c0392b;font-weight:900;">呼びかけカード</span>を選んでいます…</span>`,
       [{label:'続ける',cls:'only',action:()=>{
         const best=cpuPickCard();if(best===-1)return;
         const card=p.cards[best];
         G.selCard=best;G.phase='roll';renderSelPreview();renderCards();
         addLog(`${p.name}「${card.serif}」を選んだ`);
-        showPopup(robotIconSvg(p.name),`<span style="color:#1a5aee;font-weight:900;">${p.name}が選びました</span>`,
+        showPopup(robotIconSvg(p.name),`<span style="color:#1a3a82;font-weight:900;">${p.name}が選びました</span>`,
           `<div style="font-size:clamp(18px,4.5vw,22px);font-weight:900;color:#c0392b;margin-bottom:12px;line-height:1.5;">「${card.serif}」</div>`+makePopupVCard(card)+`<div style="margin-top:4px;font-size:clamp(15px,4vw,17px);font-weight:700;color:#1a3a82;">${p.name}がサイコロを振ります</div>`,
           [{label:'続ける',cls:'only',action:()=>doRollDice('normal')}]);
       }}]);
   } else {
-    showPopup(robotIconSvg(p.name),`<span style="color:#1a5aee;font-weight:900;">${p.name}（あなた）の番です</span>`,`<span style="color:#1a3a82;font-weight:700;"><span style="color:#c0392b;font-weight:900;">呼びかけカード</span>を選んで、<span style="color:#c0392b;font-weight:900;">${G.chara.name}</span>を安全圏に導いてください！</span>`,
+    showPopup(robotIconSvg(p.name),`<span style="color:#1a3a82;font-weight:900;">${p.name}（あなた）の番です</span>`,`<span style="color:#1a3a82;font-weight:700;"><span style="color:#c0392b;font-weight:900;">呼びかけカード</span>を選んで、<span style="color:#c0392b;font-weight:900;">${G.chara.name}</span>を安全圏に導いてください！</span>`,
       [{label:'カードを選ぶ',cls:'only',action:()=>{}}]);
   }
 }
