@@ -657,25 +657,25 @@ body{font-family:'Noto Sans JP',sans-serif;font-size:16px;touch-action:manipulat
 <script>
 const ROOFTOPS={
   easy:[
-    // 小さめ・安全圏2つ・スタートが近め
+    // 安全圏2つ・距離短め・シンプルな形
     {name:"標準屋上",     cols:3,rows:3,safe:[{r:2,c:1},{r:2,c:2}],start:{r:0,c:1}},
     {name:"広めの屋上",   cols:4,rows:3,safe:[{r:2,c:1},{r:2,c:2}],start:{r:0,c:2}},
-    {name:"短い廊下",     cols:1,rows:4,safe:[{r:3,c:0}],start:{r:0,c:0}},
     {name:"小さな広場",   cols:3,rows:3,safe:[{r:2,c:0},{r:2,c:2}],start:{r:0,c:1}},
     {name:"コンパクトL字",cols:3,rows:3,cells:[[0,1],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]],safe:[{r:2,c:1},{r:2,c:2}],start:{r:0,c:1}},
   ],
   normal:[
-    // 中程度・安全圏1〜2・適度な距離
+    // 中程度・安全圏1〜2・適度な距離・シンプルな形
+    {name:"短い廊下",     cols:1,rows:4,safe:[{r:3,c:0}],start:{r:0,c:0}},
     {name:"正方形屋上",   cols:4,rows:4,safe:[{r:3,c:1},{r:3,c:2}],start:{r:0,c:1}},
     {name:"L字屋上",      cols:3,rows:4,cells:[[0,1],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2],[3,1]],safe:[{r:3,c:1}],start:{r:0,c:1}},
     {name:"T字屋上",      cols:3,rows:5,cells:[[0,1],[1,0],[1,1],[1,2],[2,1],[3,1],[4,1]],safe:[{r:4,c:1}],start:{r:0,c:1}},
     {name:"細長い屋上",   cols:2,rows:6,safe:[{r:5,c:0},{r:5,c:1}],start:{r:0,c:0}},
     {name:"広い屋上",     cols:4,rows:4,safe:[{r:3,c:2}],start:{r:0,c:1}},
-    {name:"コの字屋上",   cols:3,rows:4,cells:[[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,1],[3,2]],safe:[{r:3,c:1}],start:{r:0,c:1}},
   ],
   hard:[
     // 大きめ・複雑な形・安全圏1マス・遠いスタート
     {name:"細道屋上",     cols:1,rows:7,safe:[{r:6,c:0}],start:{r:0,c:0}},
+    {name:"コの字屋上",   cols:3,rows:4,cells:[[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,1],[3,2]],safe:[{r:3,c:1}],start:{r:0,c:1}},
     {name:"広場屋上",     cols:5,rows:5,safe:[{r:4,c:2}],start:{r:0,c:2}},
     {name:"斜め屋上",     cols:3,rows:5,cells:[[0,2],[1,1],[1,2],[2,0],[2,1],[3,0],[4,0]],safe:[{r:4,c:0}],start:{r:0,c:2}},
     {name:"十字屋上",     cols:3,rows:5,cells:[[0,1],[1,0],[1,1],[1,2],[2,1],[3,0],[3,1],[3,2],[4,1]],safe:[{r:4,c:1}],start:{r:0,c:1}},
@@ -1563,8 +1563,8 @@ function renderBoard(){
 
 function renderDQWindows(){
   // dq-chara-icon は非表示のため描画スキップ
-  document.getElementById('dq-chara-name').textContent=G.chara.name;
-  document.getElementById('dq-chara-desc').textContent=G.chara.desc;
+  document.getElementById('dq-chara-name').textContent=G.chara.desc;
+  document.getElementById('dq-chara-desc').textContent='';
   const list=document.getElementById('dq-players-list');
   list.innerHTML='';
   G.players.forEach((p,i)=>{
